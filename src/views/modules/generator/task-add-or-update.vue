@@ -13,8 +13,13 @@
     <el-form-item label="结束时间" prop="endtime">
        <el-date-picker v-model="dataForm.endtime" type="date" placeholder="结束时间"  format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
     </el-form-item>
+    <el-form-item label="内容" prop="contest">
+        <el-input v-model="dataForm.contest" placeholder="实习名称"></el-input>
+    </el-form-item>
     <el-form-item label="实习学生" prop="getuser">
-      <el-input v-model="dataForm.getuser" placeholder="实习学生"></el-input>
+      <el-input v-model="dataForm.getuser" placeholder="实习学生">
+        <el-checkbox v-model="checked">备选项</el-checkbox>
+      </el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -37,6 +42,7 @@
           endtime: '',
           createtime: '',
           getuser: '',
+          contest: '',
           flag: ''
         },
         dataRule: {
@@ -51,10 +57,14 @@
           ],
           getuser: [
             { required: true, message: '不能为空', trigger: 'blur' }
+          ],
+          contest: [
+            { required: true, message: '不能为空', trigger: 'blur' }
           ]
         }
       }
     },
+    mounted () {},
     methods: {
       init (id) {
         this.dataForm.id = id || 0
@@ -72,6 +82,7 @@
                 this.dataForm.begintime = data.task.begintime
                 this.dataForm.endtime = data.task.endtime
                 this.dataForm.getuser = data.task.getuser
+                this.dataForm.contest = data.task.contest
               }
             })
           }
@@ -89,7 +100,8 @@
                 'name': this.dataForm.name,
                 'begintime': this.dataForm.begintime.toString,
                 'endtime': this.dataForm.endtime.toString,
-                'getuser': this.dataForm.getuser
+                'getuser': this.dataForm.getuser,
+                'contest': this.dataForm.contest
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

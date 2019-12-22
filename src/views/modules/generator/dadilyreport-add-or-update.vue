@@ -5,14 +5,15 @@
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
     <el-form-item label="内容" prop="content">
-      <el-input v-model="dataForm.content" placeholder="内容"></el-input>
+      <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model="dataForm.content"  placeholder="请输入内容">
+      </el-input>
     </el-form-item>
-    <el-form-item label="得分" prop="score">
+    <!-- <el-form-item label="得分" prop="score">
       <el-input v-model="dataForm.score" placeholder="得分"></el-input>
     </el-form-item>
     <el-form-item label="意见" prop="opinion">
       <el-input v-model="dataForm.opinion" placeholder="意见"></el-input>
-    </el-form-item>
+    </el-form-item> -->
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -37,12 +38,12 @@
         dataRule: {
           content: [
             { required: true, message: '不能为空', trigger: 'blur' }
-          ],
-          score: [
-            { required: true, message: '不能为空', trigger: 'blur' }
-          ],
-          opinion: [
-            { required: true, message: '不能为空', trigger: 'blur' }
+          // ],
+          // score: [
+          //   { required: true, message: '不能为空', trigger: 'blur' }
+          // ],
+          // opinion: [
+          //   { required: true, message: '不能为空', trigger: 'blur' }
           ]
         }
       }
@@ -78,9 +79,9 @@
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
-                'content': this.dataForm.content,
-                'score': this.dataForm.score,
-                'opinion': this.dataForm.opinion
+                'content': this.dataForm.content
+                // 'score': this.dataForm.score,
+                // 'opinion': this.dataForm.opinion
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

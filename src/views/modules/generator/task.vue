@@ -38,6 +38,12 @@
         label="任务名称">
       </el-table-column>
       <el-table-column
+        prop="contest"
+        header-align="center"
+        align="center"
+        label="正文">
+      </el-table-column>
+      <el-table-column
         prop="createuser"
         header-align="center"
         align="center"
@@ -113,7 +119,9 @@
         totalPage: 0,
         dataListLoading: false,
         dataListSelections: [],
-        addOrUpdateVisible: false
+        addOrUpdateVisible: false,
+        AllStu: []
+  
       }
     },
     components: {
@@ -121,6 +129,9 @@
     },
     activated () {
       this.getDataList()
+    },
+    mounted () {
+      this.getAllStu()
     },
     methods: {
       // 获取数据列表
@@ -195,6 +206,16 @@
               this.$message.error(data.msg)
             }
           })
+        })
+      },
+      getAllStu () {
+        this.$http({
+          url: this.$http.adornUrl('/generator/task/queryAllStuName'),
+          method: 'post',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          console.log(JSON.stringify(data))
+          this.dataForm.AllStu = data.all
         })
       }
     }
