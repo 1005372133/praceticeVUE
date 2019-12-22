@@ -91,12 +91,6 @@
       @selection-change="selectionChangeHandle"
       style="width: 100%;">
 
-<el-table-column
-        type="selection"
-        header-align="center"
-        align="center"
-        width="50">
-      </el-table-column>
       <el-table-column
         prop="id"
         header-align="center"
@@ -139,16 +133,29 @@
         align="center"
         width="150"
         label="操作">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="comment(scope.row.id)">评论</el-button>
+        <template slot-scope="commentscope">
+          <el-button type="text" size="small" @click="comment(commentscope.row.id)">评论</el-button>
         </template>
 </el-table-column>
   </el-table>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+</el-dialog>
+  <!-- 评论 模态-->
+    
+     <el-dialog
+  title="提示"
+  :visible.sync="commentdialogVisible"
+  width="70%"
+  :before-close="handleClose">
+  评分：
+<el-input v-model="score" placeholder="请输入内容"></el-input>
+意见：
+<el-input v-model="opinion" placeholder="请输入内容"></el-input>
+ <span slot="footer" class="dialog-footer">
+    <el-button @click="commentdialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="commentFormSubmit()">确 定</el-button>
   </span>
 </el-dialog>
+<!-- <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update> -->
 
   </div>
 </template>
@@ -159,9 +166,14 @@
     data () {
       return {
         dataForm: {
-          key: '',
+          key: ''
+        },
+        commentdataForm: {
           reportkey: ''
         },
+        commentId: '',
+        score: '',
+        opinion: '',
         dataList: [],
         reportList: [],
         pageIndex: 1,
@@ -171,7 +183,9 @@
         reportListLoading: false,
         dataListSelections: [],
         addOrUpdateVisible: false,
-        dialogVisible: false
+        commentVisible: false,
+        dialogVisible: false,
+        commentdialogVisible: false
       }
     },
     components: {
@@ -263,6 +277,7 @@
           })
         })
       },
+      // 获取日报数据
       getReportList () {
         this.reportListLoading = true
         this.$http({
@@ -282,6 +297,44 @@
             this.totalPage = 0
           }
           this.reportListLoading = false
+        })
+      },
+      // 打分
+      comment (id) {
+        this.commentdialogVisible = true
+        this.commentId = id
+        // this.$nextTick(() => {
+        //   this.$refs.addOrUpdate.init(id)
+        // })
+      },
+      // 评论
+      commentFormSubmit () {
+        this.$http({
+          url: this.$http.adornUrl('/generator/dadilyreport/update'),
+          method: 'post',
+          data: this.$http.adornData({
+            'id': this.commentId,
+            // 'content': this.dataForm.content
+            'score': this.score,
+            'opinion': this.opinion
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.commentdialogVisible = false
+                this.getReportList()
+                this.$emit('refreshDataList')
+                this.score = ''
+                this.opinion = ''
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
         })
       }
     }
