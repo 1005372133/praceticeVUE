@@ -4,26 +4,17 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="" prop="name">
-      <el-input v-model="dataForm.name" placeholder=""></el-input>
+    <el-form-item label="实习名称" prop="name">
+      <el-input v-model="dataForm.name" placeholder="实习名称"></el-input>
     </el-form-item>
-    <el-form-item label="" prop="createuser">
-      <el-input v-model="dataForm.createuser" placeholder=""></el-input>
+    <el-form-item label="开始时间" prop="begintime">
+       <el-date-picker v-model="dataForm.begintime" type="date" placeholder="开始时间"  format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
     </el-form-item>
-    <el-form-item label="" prop="begintime">
-      <el-input v-model="dataForm.begintime" placeholder=""></el-input>
+    <el-form-item label="结束时间" prop="endtime">
+       <el-date-picker v-model="dataForm.endtime" type="date" placeholder="结束时间"  format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
     </el-form-item>
-    <el-form-item label="" prop="endtime">
-      <el-input v-model="dataForm.endtime" placeholder=""></el-input>
-    </el-form-item>
-    <el-form-item label="" prop="createtime">
-      <el-input v-model="dataForm.createtime" placeholder=""></el-input>
-    </el-form-item>
-    <el-form-item label="" prop="getuser">
-      <el-input v-model="dataForm.getuser" placeholder=""></el-input>
-    </el-form-item>
-    <el-form-item label="" prop="flag">
-      <el-input v-model="dataForm.flag" placeholder=""></el-input>
+    <el-form-item label="实习学生" prop="getuser">
+      <el-input v-model="dataForm.getuser" placeholder="实习学生"></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -52,22 +43,13 @@
           name: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ],
-          createuser: [
-            { required: true, message: '不能为空', trigger: 'blur' }
-          ],
           begintime: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ],
           endtime: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ],
-          createtime: [
-            { required: true, message: '不能为空', trigger: 'blur' }
-          ],
           getuser: [
-            { required: true, message: '不能为空', trigger: 'blur' }
-          ],
-          flag: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ]
         }
@@ -87,12 +69,9 @@
             }).then(({data}) => {
               if (data && data.code === 0) {
                 this.dataForm.name = data.task.name
-                this.dataForm.createuser = data.task.createuser
                 this.dataForm.begintime = data.task.begintime
                 this.dataForm.endtime = data.task.endtime
-                this.dataForm.createtime = data.task.createtime
                 this.dataForm.getuser = data.task.getuser
-                this.dataForm.flag = data.task.flag
               }
             })
           }
@@ -108,12 +87,9 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'name': this.dataForm.name,
-                'createuser': this.dataForm.createuser,
-                'begintime': this.dataForm.begintime,
-                'endtime': this.dataForm.endtime,
-                'createtime': this.dataForm.createtime,
-                'getuser': this.dataForm.getuser,
-                'flag': this.dataForm.flag
+                'begintime': this.dataForm.begintime.toString,
+                'endtime': this.dataForm.endtime.toString,
+                'getuser': this.dataForm.getuser
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

@@ -6,8 +6,11 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('generator:task:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('generator:task:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <!-- <el-button v-if="isAuth('generator:task:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('generator:task:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
+      
+      <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -26,49 +29,49 @@
         prop="id"
         header-align="center"
         align="center"
-        label="">
+        label="id">
       </el-table-column>
       <el-table-column
         prop="name"
         header-align="center"
         align="center"
-        label="">
+        label="任务名称">
       </el-table-column>
       <el-table-column
         prop="createuser"
         header-align="center"
         align="center"
-        label="">
+        label="创建人">
       </el-table-column>
       <el-table-column
         prop="begintime"
         header-align="center"
         align="center"
-        label="">
+        label="开始时间">
       </el-table-column>
       <el-table-column
         prop="endtime"
         header-align="center"
         align="center"
-        label="">
+        label="结束时间">
       </el-table-column>
       <el-table-column
         prop="createtime"
         header-align="center"
         align="center"
-        label="">
+        label="创建时间">
       </el-table-column>
       <el-table-column
         prop="getuser"
         header-align="center"
         align="center"
-        label="">
+        label="实习学生">
       </el-table-column>
       <el-table-column
         prop="flag"
         header-align="center"
         align="center"
-        label="">
+        label="任务状态">
       </el-table-column>
       <el-table-column
         fixed="right"

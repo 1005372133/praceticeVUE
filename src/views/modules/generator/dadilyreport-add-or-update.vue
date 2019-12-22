@@ -4,20 +4,14 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="" prop="content">
-      <el-input v-model="dataForm.content" placeholder=""></el-input>
+    <el-form-item label="内容" prop="content">
+      <el-input v-model="dataForm.content" placeholder="内容"></el-input>
     </el-form-item>
-    <el-form-item label="" prop="time">
-      <el-input v-model="dataForm.time" placeholder=""></el-input>
+    <el-form-item label="得分" prop="score">
+      <el-input v-model="dataForm.score" placeholder="得分"></el-input>
     </el-form-item>
-    <el-form-item label="" prop="user">
-      <el-input v-model="dataForm.user" placeholder=""></el-input>
-    </el-form-item>
-    <el-form-item label="" prop="score">
-      <el-input v-model="dataForm.score" placeholder=""></el-input>
-    </el-form-item>
-    <el-form-item label="" prop=" opinion">
-      <el-input v-model="dataForm. opinion" placeholder=""></el-input>
+    <el-form-item label="意见" prop="opinion">
+      <el-input v-model="dataForm.opinion" placeholder="意见"></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -44,12 +38,6 @@
           content: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ],
-          time: [
-            { required: true, message: '不能为空', trigger: 'blur' }
-          ],
-          user: [
-            { required: true, message: '不能为空', trigger: 'blur' }
-          ],
           score: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ],
@@ -73,7 +61,6 @@
             }).then(({data}) => {
               if (data && data.code === 0) {
                 this.dataForm.content = data.dadilyreport.content
-                this.dataForm.time = data.dadilyreport.time
                 this.dataForm.user = data.dadilyreport.user
                 this.dataForm.score = data.dadilyreport.score
                 this.dataForm.opinion = data.dadilyreport.opinion
@@ -92,10 +79,8 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'content': this.dataForm.content,
-                'time': this.dataForm.time,
-                'user': this.dataForm.user,
                 'score': this.dataForm.score,
-                ' opinion': this.dataForm.opinion
+                'opinion': this.dataForm.opinion
               })
             }).then(({data}) => {
               if (data && data.code === 0) {
