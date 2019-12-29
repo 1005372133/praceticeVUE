@@ -10,7 +10,8 @@
         <el-button v-if="isAuth('generator:dadilyreport:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
         <el-button  type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
-        <el-button  type="primary" @click="uploadVisible = true">上传</el-button>
+        <el-button  type="primary" @click="uploadVisible = true">项目上传</el-button>
+        <el-button  type="primary" @click="taskVisible = true">实习任务</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -107,6 +108,71 @@
 </el-dialog>
 
 
+<el-dialog
+  title="实习任务"
+  :visible.sync="taskVisible"
+  width="60%">
+
+
+ <el-table
+      :data="taskList"
+      border
+      v-loading="dataListLoading"
+      @selection-change="selectionChangeHandle"
+      style="width: 100%;">
+      <el-table-column
+        prop="name"
+        header-align="center"
+        align="center"
+        label="任务名称">
+      </el-table-column>
+      <el-table-column
+        prop="contest"
+        header-align="center"
+        align="center"
+        label="正文">
+      </el-table-column>
+      <el-table-column
+        prop="createuser"
+        header-align="center"
+        align="center"
+        label="创建人">
+      </el-table-column>
+      <el-table-column
+        prop="begintime"
+        header-align="center"
+        align="center"
+        label="开始时间">
+      </el-table-column>
+      <el-table-column
+        prop="endtime"
+        header-align="center"
+        align="center"
+        label="结束时间">
+      </el-table-column>
+      <el-table-column
+        prop="createtime"
+        header-align="center"
+        align="center"
+        label="创建时间">
+      </el-table-column>
+      <el-table-column
+        prop="flag"
+        header-align="center"
+        align="center"
+        label="任务状态">
+      </el-table-column>
+    </el-table>
+
+
+
+
+ <span slot="footer" class="dialog-footer">
+    <el-button @click="taskVisible = false">取 消</el-button>
+  </span>
+</el-dialog>
+
+
   </div>
 </template>
 
@@ -120,6 +186,7 @@
           key: ''
         },
         uploadVisible: false,
+        taskVisible: false,
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
@@ -127,6 +194,7 @@
         dataListLoading: false,
         dataListSelections: [],
         addOrUpdateVisible: false,
+        taskList: [],
         myHeaders: {token: Vue.cookie.get('token')}
       }
     },
@@ -135,6 +203,7 @@
     },
     activated () {
       this.getDataList()
+      this.gettaskList()
     },
     methods: {
       // 获取数据列表
@@ -157,6 +226,21 @@
             this.totalPage = 0
           }
           this.dataListLoading = false
+        })
+      },
+      // 获取登陆人实习任务
+      gettaskList () {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/generator/dadilyreport/getTask'),
+          method: 'get'
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.taskList = data.page.list
+          } else {
+            this.taskList = []
+          }
+          this.taskVisible = false
         })
       },
       // 每页数
