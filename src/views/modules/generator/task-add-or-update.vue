@@ -8,10 +8,10 @@
       <el-input v-model="dataForm.name" placeholder="实习名称"></el-input>
     </el-form-item>
     <el-form-item label="开始时间" prop="begintime">
-       <el-date-picker v-model="dataForm.begintime" type="date" placeholder="开始时间"  format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+       <el-date-picker v-model="dataForm.begintime" type="date" placeholder="开始时间"  format="yyyy-MM-dd"></el-date-picker>
     </el-form-item>
     <el-form-item label="结束时间" prop="endtime">
-       <el-date-picker v-model="dataForm.endtime" type="date" placeholder="结束时间"  format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+       <el-date-picker v-model="dataForm.endtime" type="date" placeholder="结束时间"  format="yyyy-MM-dd"></el-date-picker>
     </el-form-item>
     <el-form-item label="内容" prop="contest">
         <el-input v-model="dataForm.contest" placeholder="实习名称"></el-input>
@@ -98,8 +98,8 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'name': this.dataForm.name,
-                'begintime': this.dataForm.begintime.toString,
-                'endtime': this.dataForm.endtime.toString,
+                'begintime': this.dataForm.begintime,
+                'endtime': this.dataForm.endtime,
                 'getuser': this.dataForm.getuser,
                 'contest': this.dataForm.contest
               })

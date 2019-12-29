@@ -10,6 +10,7 @@
         <el-button v-if="isAuth('generator:dadilyreport:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
         <el-button  type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button  type="primary" @click="uploadVisible = true">上传</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -83,24 +84,50 @@
     </el-pagination>
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+
+
+
+
+<el-dialog
+  title="上传"
+  :visible.sync="uploadVisible"
+  width="22%">
+    <el-upload
+  class="upload-demo"
+  drag
+  action="http://localhost:8080/renren-fast/generator/dadilyreport/upload"
+  :headers="myHeaders"
+  multiple>
+  <i class="el-icon-upload"></i>
+  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+</el-upload>
+ <span slot="footer" class="dialog-footer">
+    <el-button @click="uploadVisible = false">取 消</el-button>
+  </span>
+</el-dialog>
+
+
   </div>
 </template>
 
 <script>
   import AddOrUpdate from './dadilyreport-add-or-update'
+  import Vue from 'vue'
   export default {
     data () {
       return {
         dataForm: {
           key: ''
         },
+        uploadVisible: false,
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
         totalPage: 0,
         dataListLoading: false,
         dataListSelections: [],
-        addOrUpdateVisible: false
+        addOrUpdateVisible: false,
+        myHeaders: {token: Vue.cookie.get('token')}
       }
     },
     components: {

@@ -3,8 +3,7 @@
     <div class="site-content__wrapper">
       <div class="site-content">
         <div class="brand-info">
-          <h2 class="brand-info__text">renren-fast-vue</h2>
-          <p class="brand-info__intro">实习管理系统</p>
+          <h2 class="brand-info__text">实习管理系统</h2>       
         </div>
         <div class="login-main">
           <h3 class="login-title">管理员登录</h3>
