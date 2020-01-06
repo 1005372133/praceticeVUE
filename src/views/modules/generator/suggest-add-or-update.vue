@@ -1,20 +1,20 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="dataForm.flag==0 ? '期中评定' : '期末评定'"
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="" prop="time">
-      <el-input v-model="dataForm.time" placeholder=""></el-input>
+    <el-form-item v-show="dataForm.flag==0" label="期中成绩" prop="committime">
+      <el-input v-model="dataForm.qzscoure" placeholder=""></el-input>
     </el-form-item>
-    <el-form-item label="" prop="createuser">
-      <el-input v-model="dataForm.createuser" placeholder=""></el-input>
+    <el-form-item v-show="dataForm.flag==0" label="期中评价" prop="content">
+      <el-input v-model="dataForm.qzcomment" placeholder=""></el-input>
     </el-form-item>
-    <el-form-item label="" prop="foruser">
-      <el-input v-model="dataForm.foruser" placeholder=""></el-input>
+    <el-form-item v-show="dataForm.flag==1" label="期末成绩" prop="committime">
+      <el-input v-model="dataForm.qmcsoure" placeholder=""></el-input>
     </el-form-item>
-    <el-form-item label="" prop="content">
-      <el-input v-model="dataForm.content" placeholder=""></el-input>
+    <el-form-item v-show="dataForm.flag==1" label="期末评价" prop="content">
+      <el-input v-model="dataForm.qmcomment" placeholder=""></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -30,48 +30,51 @@
       return {
         visible: false,
         dataForm: {
+          flag: '',
           id: 0,
-          time: '',
-          createuser: '',
-          foruser: '',
-          content: ''
+          qzscoure: '',
+          qzcomment: '',
+          qmcsoure: '',
+          qmcomment: '',
+          userid: ''
         },
         dataRule: {
-          time: [
+          qzscoure: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ],
-          createuser: [
+          qzcomment: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ],
-          foruser: [
+          qmcsoure: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ],
-          content: [
+          qmcomment: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ]
         }
       }
     },
     methods: {
-      init (id) {
+      init (id, flag) {
+        this.dataForm.flag = flag
         this.dataForm.id = id || 0
         this.visible = true
         this.$nextTick(() => {
           this.$refs['dataForm'].resetFields()
-          if (this.dataForm.id) {
-            this.$http({
-              url: this.$http.adornUrl(`/generator/suggest/info/${this.dataForm.id}`),
-              method: 'get',
-              params: this.$http.adornParams()
-            }).then(({data}) => {
-              if (data && data.code === 0) {
-                this.dataForm.time = data.suggest.time
-                this.dataForm.createuser = data.suggest.createuser
-                this.dataForm.foruser = data.suggest.foruser
-                this.dataForm.content = data.suggest.content
-              }
-            })
-          }
+          // if (this.dataForm.id) {
+          this.$http({
+            url: this.$http.adornUrl(`/generator/suggest/info/${this.dataForm.id}`),
+            method: 'get',
+            params: this.$http.adornParams()
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.dataForm.time = data.suggest.time
+              this.dataForm.createuser = data.suggest.createuser
+              this.dataForm.foruser = data.suggest.foruser
+              this.dataForm.content = data.suggest.content
+            }
+          })
+         // }
         })
       },
       // 表单提交

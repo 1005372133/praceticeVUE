@@ -8,9 +8,9 @@
         <el-button @click="getDataList()">查询</el-button>
         <!-- <el-button v-if="isAuth('generator:suggest:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button v-if="isAuth('generator:suggest:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
-         <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
-        <el-button type="text" @click="dialogVisible = true">评分</el-button>
+         <!-- <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button> -->
+        <!-- <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
+        <el-button type="text" @click="dialogVisible = true">日常日报评分</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -26,34 +26,34 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="id"
+        prop="user_id"
         header-align="center"
         align="center"
-        label="">
+        label="id">
       </el-table-column>
       <el-table-column
-        prop="time"
+        prop="username"
         header-align="center"
         align="center"
-        label="">
+        label="学生名称">
       </el-table-column>
       <el-table-column
-        prop="createuser"
+        prop="mobile"
         header-align="center"
         align="center"
-        label="">
+        label="手机号">
       </el-table-column>
       <el-table-column
-        prop="foruser"
+        prop="zhidaoopinion"
         header-align="center"
         align="center"
-        label="">
+        label="中期分数">
       </el-table-column>
       <el-table-column
-        prop="content"
+        prop="zhidaoscore"
         header-align="center"
         align="center"
-        label="">
+        label="期末分数">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -62,8 +62,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id,0)">期中成绩</el-button>
+          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id,1)">期末成绩</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -87,7 +87,7 @@
   <el-table
       :data="reportList"
       border
-      v-loading="dataListLoading"
+      v-loading="reportListLoading"
       @selection-change="selectionChangeHandle"
       style="width: 100%;">
 
@@ -207,8 +207,8 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/generator/suggest/list'),
-          method: 'get',
+          url: this.$http.adornUrl('/generator/task/queryAllStuName'),
+          method: 'post',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
@@ -216,7 +216,7 @@
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.dataList = data.page.list
+            this.dataList = data.page
             this.totalPage = data.page.totalCount
           } else {
             this.dataList = []
@@ -241,10 +241,10 @@
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle (id) {
+      addOrUpdateHandle (id, flag) {
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
-          this.$refs.addOrUpdate.init(id)
+          this.$refs.addOrUpdate.init(id, flag)
         })
       },
       // 删除

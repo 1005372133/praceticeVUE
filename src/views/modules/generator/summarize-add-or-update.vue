@@ -4,17 +4,17 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="" prop="committime">
-      <el-input v-model="dataForm.committime" placeholder=""></el-input>
+    <el-form-item label="期中成绩" prop="committime">
+      <el-input v-model="dataForm.qzscoure" placeholder=""></el-input>
     </el-form-item>
-    <el-form-item label="" prop="content">
-      <el-input v-model="dataForm.content" placeholder=""></el-input>
+    <el-form-item label="期中评价" prop="content">
+      <el-input v-model="dataForm.qzcomment" placeholder=""></el-input>
     </el-form-item>
-    <el-form-item label="" prop="user">
-      <el-input v-model="dataForm.user" placeholder=""></el-input>
+    <el-form-item label="期末成绩" prop="committime">
+      <el-input v-model="dataForm.qmcsoure" placeholder=""></el-input>
     </el-form-item>
-    <el-form-item label="" prop="commituser">
-      <el-input v-model="dataForm.commituser" placeholder=""></el-input>
+    <el-form-item label="期末评价" prop="content">
+      <el-input v-model="dataForm.qmcomment" placeholder=""></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -31,10 +31,11 @@
         visible: false,
         dataForm: {
           id: 0,
-          committime: '',
-          content: '',
-          user: '',
-          commituser: ''
+          qzscoure: '',
+          qzcomment: '',
+          qmcsoure: '',
+          qmcomment: '',
+          userid: ''
         },
         dataRule: {
           committime: [

@@ -214,8 +214,6 @@
     activated () {
       this.getDataList()
       this.getReportList()
-    },
-    mounted () {
       this.getAllStu()
     },
     methods: {
