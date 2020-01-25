@@ -27,6 +27,7 @@
   export default {
     data () {
       return {
+        dataList: '',
         visible: false,
         dataForm: {
           id: 0,

@@ -17,9 +17,15 @@
         <el-input v-model="dataForm.contest" placeholder="实习名称"></el-input>
     </el-form-item>
     <el-form-item label="实习学生" prop="getuser">
-      <el-input v-model="dataForm.getuser" placeholder="实习学生">
+      <!-- <el-input v-model="dataForm.getuser" placeholder="实习学生">
         <el-checkbox v-model="checked">备选项</el-checkbox>
-      </el-input>
+      </el-input> -->
+
+
+       <el-checkbox-group v-model="dataForm.getuser" @change="handleCheckedCitiesChange">
+    <el-checkbox v-for="stu in AllStu" :label="stu.username" :key="stu.user_id">{{stu.username}}</el-checkbox>
+  </el-checkbox-group>
+
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -34,6 +40,8 @@
     data () {
       return {
         visible: false,
+        dataList: '',
+        AllStu: [],
         dataForm: {
           id: 0,
           name: '',
@@ -64,8 +72,20 @@
         }
       }
     },
-    mounted () {},
+    mounted () {
+      this.getAllStu()
+    },
     methods: {
+      getAllStu () {
+        this.$http({
+          url: this.$http.adornUrl('/generator/task/queryAllStuName'),
+          method: 'post',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          console.log(data.page)
+          this.AllStu = data.page
+        })
+      },
       init (id) {
         this.dataForm.id = id || 0
         this.visible = true
@@ -120,6 +140,15 @@
             })
           }
         })
+      },
+      handleCheckAllChange (val) {
+        // this.checkedCities = val ? cityOptions : []
+        // this.isIndeterminate = false
+      },
+      handleCheckedCitiesChange (value) {
+        // let checkedCount = value.length
+        // this.checkAll = checkedCount === this.cities.length
+        // this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length
       }
     }
   }

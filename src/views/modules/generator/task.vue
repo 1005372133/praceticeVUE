@@ -109,7 +109,7 @@
   title="提示"
   :visible.sync="dialogVisible"
   width="70%"
-  :before-close="handleClose">
+ >
   <el-table
       :data="reportList"
       border
@@ -171,7 +171,7 @@
   title="提示"
   :visible.sync="commentdialogVisible"
   width="70%"
-  :before-close="handleClose">
+  >
   评分：
 <el-input v-model="score" placeholder="请输入内容"></el-input>
 意见：
@@ -204,8 +204,10 @@
         AllStu: [],
         commentVisible: false,
         dialogVisible: false,
-        commentdialogVisible: false
-  
+        commentdialogVisible: false,
+        reportList: [],
+        score: '',
+        opinion: ''
       }
     },
     components: {
@@ -359,8 +361,7 @@
           method: 'post',
           params: this.$http.adornParams()
         }).then(({data}) => {
-          console.log(JSON.stringify(data))
-          this.dataForm.AllStu = data.all
+          this.dataForm.AllStu = data.page
         })
       }
     }
