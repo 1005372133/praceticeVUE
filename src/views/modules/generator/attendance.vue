@@ -6,13 +6,10 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <!-- <el-button v-if="isAuth('generator:dadilyreport:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('generator:dadilyreport:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
-        <el-button  type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <!-- <el-button v-if="isAuth('generator:attendance:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('generator:attendance:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
+          <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
-        <el-button  type="primary" @click="uploadVisible = true">项目上传</el-button>
-        <el-button  type="primary" @click="taskVisible = true">实习任务</el-button>
-        <el-button  type="primary" @click="taskVisible = true">出勤管理</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -22,6 +19,7 @@
       @selection-change="selectionChangeHandle"
       style="width: 100%;">
       <el-table-column
+      
         type="selection"
         header-align="center"
         align="center"
@@ -34,34 +32,22 @@
         label="id">
       </el-table-column>
       <el-table-column
-        prop="content"
+        prop="type"
         header-align="center"
         align="center"
-        label="内容">
+        label="出勤类型">
       </el-table-column>
       <el-table-column
-        prop="time"
+        prop="date"
         header-align="center"
         align="center"
-        label="发布时间">
+        label="日期">
       </el-table-column>
       <el-table-column
-        prop="user"
+        prop="userid"
         header-align="center"
         align="center"
-        label="发布人">
-      </el-table-column>
-      <el-table-column
-        prop="score"
-        header-align="center"
-        align="center"
-        label="得分">
-      </el-table-column>
-      <el-table-column
-        prop="opinion"
-        header-align="center"
-        align="center"
-        label="意见">
+        label="出勤者">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -86,117 +72,24 @@
     </el-pagination>
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
-
-
-
-
-<el-dialog
-  title="上传"
-  :visible.sync="uploadVisible"
-  width="22%">
-    <el-upload
-  class="upload-demo"
-  drag
-  action="http://localhost:8080/renren-fast/generator/dadilyreport/upload"
-  :headers="myHeaders"
-  multiple>
-  <i class="el-icon-upload"></i>
-  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-</el-upload>
- <span slot="footer" class="dialog-footer">
-    <el-button @click="uploadVisible = false">取 消</el-button>
-  </span>
-</el-dialog>
-
-
-<el-dialog
-  title="实习任务"
-  :visible.sync="taskVisible"
-  width="60%">
-
-
- <el-table
-      :data="taskList"
-      border
-      v-loading="dataListLoading"
-      @selection-change="selectionChangeHandle"
-      style="width: 100%;">
-      <el-table-column
-        prop="name"
-        header-align="center"
-        align="center"
-        label="任务名称">
-      </el-table-column>
-      <el-table-column
-        prop="contest"
-        header-align="center"
-        align="center"
-        label="正文">
-      </el-table-column>
-      <el-table-column
-        prop="createuser"
-        header-align="center"
-        align="center"
-        label="创建人">
-      </el-table-column>
-      <el-table-column
-        prop="begintime"
-        header-align="center"
-        align="center"
-        label="开始时间">
-      </el-table-column>
-      <el-table-column
-        prop="endtime"
-        header-align="center"
-        align="center"
-        label="结束时间">
-      </el-table-column>
-      <el-table-column
-        prop="createtime"
-        header-align="center"
-        align="center"
-        label="创建时间">
-      </el-table-column>
-      <el-table-column
-        prop="flag"
-        header-align="center"
-        align="center"
-        label="任务状态">
-      </el-table-column>
-    </el-table>
-
-
-
-
- <span slot="footer" class="dialog-footer">
-    <el-button @click="taskVisible = false">取 消</el-button>
-  </span>
-</el-dialog>
-
-
   </div>
 </template>
 
 <script>
-  import AddOrUpdate from './dadilyreport-add-or-update'
-  import Vue from 'vue'
+  import AddOrUpdate from './attendance-add-or-update'
   export default {
     data () {
       return {
         dataForm: {
           key: ''
         },
-        uploadVisible: false,
-        taskVisible: false,
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
         totalPage: 0,
         dataListLoading: false,
         dataListSelections: [],
-        addOrUpdateVisible: false,
-        taskList: [],
-        myHeaders: {token: Vue.cookie.get('token')}
+        addOrUpdateVisible: false
       }
     },
     components: {
@@ -204,14 +97,13 @@
     },
     activated () {
       this.getDataList()
-      this.gettaskList()
     },
     methods: {
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/generator/dadilyreport/list'),
+          url: this.$http.adornUrl('/generator/attendance/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -227,21 +119,6 @@
             this.totalPage = 0
           }
           this.dataListLoading = false
-        })
-      },
-      // 获取登陆人实习任务
-      gettaskList () {
-        this.dataListLoading = true
-        this.$http({
-          url: this.$http.adornUrl('/generator/dadilyreport/getTask'),
-          method: 'get'
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.taskList = data.page.list
-          } else {
-            this.taskList = []
-          }
-          this.taskVisible = false
         })
       },
       // 每页数
@@ -277,7 +154,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/generator/dadilyreport/delete'),
+            url: this.$http.adornUrl('/generator/attendance/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
