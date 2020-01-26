@@ -59,6 +59,18 @@
             }).then(({data}) => {
               if (data && data.code === 0) {
                 this.dataForm.type = data.attendance.type
+                if (this.dataForm.type === '迟到早退') {
+                  this.dataForm.type = 1
+                }
+                if (this.dataForm.type === '签到') {
+                  this.dataForm.type = 2
+                }
+                if (this.dataForm.type === '旷课') {
+                  this.dataForm.type = 3
+                }
+                if (this.dataForm.type === '请假') {
+                  this.dataForm.type = 4
+                }
                 this.dataForm.date = data.attendance.date
               }
             })

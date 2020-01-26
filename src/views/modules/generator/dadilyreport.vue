@@ -12,7 +12,6 @@
         <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
         <el-button  type="primary" @click="uploadVisible = true">项目上传</el-button>
         <el-button  type="primary" @click="taskVisible = true">实习任务</el-button>
-        <el-button  type="primary" @click="taskVisible = true">出勤管理</el-button>
       </el-form-item>
     </el-form>
     <el-table

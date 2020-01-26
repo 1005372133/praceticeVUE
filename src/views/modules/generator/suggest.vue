@@ -44,13 +44,13 @@
         label="手机号">
       </el-table-column>
       <el-table-column
-        prop="zhidaoopinion"
+        prop="qzscoure"
         header-align="center"
         align="center"
         label="中期分数">
       </el-table-column>
       <el-table-column
-        prop="zhidaoscore"
+        prop="qmcsoure"
         header-align="center"
         align="center"
         label="期末分数">
@@ -207,7 +207,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/generator/task/queryAllStuName'),
+          url: this.$http.adornUrl('/generator/task/queryAllStuNameScore'),
           method: 'post',
           params: this.$http.adornParams({
             'page': this.pageIndex,
