@@ -17,14 +17,9 @@
         <el-input v-model="dataForm.contest" placeholder="实习名称"></el-input>
     </el-form-item>
     <el-form-item label="实习学生" prop="getuser">
-      <!-- <el-input v-model="dataForm.getuser" placeholder="实习学生">
-        <el-checkbox v-model="checked">备选项</el-checkbox>
-      </el-input> -->
-
-
-       <el-checkbox-group v-model="dataForm.getuser" @change="handleCheckedCitiesChange">
-    <el-checkbox v-for="stu in AllStu" :label="stu.username" :key="stu.user_id">{{stu.username}}</el-checkbox>
-  </el-checkbox-group>
+    <el-checkbox-group v-model="dataForm.getuser">
+          <el-checkbox v-for="stu in AllStu" :key="stu.userId" :label="stu.userId">{{ stu.username }}</el-checkbox>
+        </el-checkbox-group>
 
     </el-form-item>
     </el-form>
@@ -49,7 +44,7 @@
           begintime: '',
           endtime: '',
           createtime: '',
-          getuser: '',
+          getuser: [],
           contest: '',
           flag: ''
         },
