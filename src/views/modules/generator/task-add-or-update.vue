@@ -17,10 +17,9 @@
         <el-input v-model="dataForm.contest" placeholder="实习名称"></el-input>
     </el-form-item>
     <el-form-item label="实习学生" prop="getuser">
-    <el-checkbox-group v-model="dataForm.getuser">
+      <el-checkbox-group v-model="dataForm.getuser">
           <el-checkbox v-for="stu in AllStu" :key="stu.userId" :label="stu.userId">{{ stu.username }}</el-checkbox>
-        </el-checkbox-group>
-
+      </el-checkbox-group>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -77,8 +76,11 @@
           method: 'post',
           params: this.$http.adornParams()
         }).then(({data}) => {
-          console.log(data.page)
-          this.AllStu = data.page
+          this.AllStu = data.page && data.code === 0 ? data.page : []
+        }).then(() => {
+          this.$nextTick(() => {
+            this.$refs['dataForm'].resetFields()
+          })
         })
       },
       init (id) {
@@ -96,7 +98,13 @@
                 this.dataForm.name = data.task.name
                 this.dataForm.begintime = data.task.begintime
                 this.dataForm.endtime = data.task.endtime
-                this.dataForm.getuser = data.task.getuser
+  
+                if (data.task.getuser !== '') {
+                  var s = JSON.stringify(data.task.getuser.split(','))
+                  for (var i = 0; i < s.length; i++) {
+                    this.dataForm.getuser.push(parseInt(s[i]))
+                  }
+                }
                 this.dataForm.contest = data.task.contest
               }
             })
@@ -115,7 +123,7 @@
                 'name': this.dataForm.name,
                 'begintime': this.dataForm.begintime,
                 'endtime': this.dataForm.endtime,
-                'getuser': this.dataForm.getuser,
+                'getuser': JSON.stringify(this.dataForm.getuser),
                 'contest': this.dataForm.contest
               })
             }).then(({data}) => {

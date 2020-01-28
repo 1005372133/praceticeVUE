@@ -216,7 +216,6 @@
     activated () {
       this.getDataList()
       this.getReportList()
-      this.getAllStu()
     },
     methods: {
 
@@ -353,15 +352,6 @@
               this.$message.error(data.msg)
             }
           })
-        })
-      },
-      getAllStu () {
-        this.$http({
-          url: this.$http.adornUrl('/generator/task/queryAllStuName'),
-          method: 'post',
-          params: this.$http.adornParams()
-        }).then(({data}) => {
-          this.dataForm.AllStu = data.page
         })
       }
     }
