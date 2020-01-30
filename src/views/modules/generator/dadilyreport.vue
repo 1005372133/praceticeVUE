@@ -12,6 +12,7 @@
         <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
         <el-button  type="primary" @click="uploadVisible = true">项目上传</el-button>
         <el-button  type="primary" @click="taskVisible = true">实习任务</el-button>
+         <el-button  type="primary" @click="scoreVisible = true">查看成绩</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -173,6 +174,19 @@
 </el-dialog>
 
 
+<el-dialog
+  title="成绩"
+  :visible.sync="scoreVisible"
+  width="30%">
+  期中成绩：{{this.qzscoure}}
+  <br>
+  期中评价：{{this.qzcomment}}
+  <br>
+  期末成绩：{{this.qmcsoure}}
+  <br>
+  期末评价：{{this.qmcomment}}
+</el-dialog>
+
   </div>
 </template>
 
@@ -187,6 +201,7 @@
         },
         uploadVisible: false,
         taskVisible: false,
+        scoreVisible: false,
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
@@ -195,7 +210,11 @@
         dataListSelections: [],
         addOrUpdateVisible: false,
         taskList: [],
-        myHeaders: {token: Vue.cookie.get('token')}
+        myHeaders: {token: Vue.cookie.get('token')},
+        qzscoure: '',
+        qzcomment: '',
+        qmcsoure: '',
+        qmcomment: ''
       }
     },
     components: {
@@ -204,6 +223,7 @@
     activated () {
       this.getDataList()
       this.gettaskList()
+      this.getScoreDataList()
     },
     methods: {
       // 获取数据列表
@@ -293,6 +313,25 @@
               this.$message.error(data.msg)
             }
           })
+        })
+      },
+      // 获取数据列表
+      getScoreDataList () {
+        this.$nextTick(() => {
+          this.$http({
+            url: this.$http.adornUrl(`/generator/task/queryAllStuNameScoreStu`),
+            method: 'post',
+            params: this.$http.adornParams(
+            )
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.qzscoure = data.page[0].qzscoure
+              this.qzcomment = data.page[0].qzcomment
+              this.qmcsoure = data.page[0].qmcsoure
+              this.qmcomment = data.page[0].qmcomment
+            }
+          })
+         // }
         })
       }
     }
