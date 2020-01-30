@@ -56,22 +56,26 @@
     },
     methods: {
       init (id, flag) {
-        this.dataForm.flag = flag
-        this.dataForm.id = id || 0
         this.visible = true
+        this.dataForm.flag = flag
+        this.dataForm.userid = id
         this.$nextTick(() => {
           this.$refs['dataForm'].resetFields()
           // if (this.dataForm.id) {
           this.$http({
-            url: this.$http.adornUrl(`/generator/suggest/info/${this.dataForm.id}`),
-            method: 'get',
-            params: this.$http.adornParams()
+            url: this.$http.adornUrl(`/generator/task/queryAllStuNameScore`),
+            method: 'post',
+            params: this.$http.adornParams({
+              'userId': id
+            }
+            )
           }).then(({data}) => {
             if (data && data.code === 0) {
-              this.dataForm.time = data.suggest.time
-              this.dataForm.createuser = data.suggest.createuser
-              this.dataForm.foruser = data.suggest.foruser
-              this.dataForm.content = data.suggest.content
+              this.dataForm.qzscoure = data.page[0].qzscoure
+              this.dataForm.qzcomment = data.page[0].qzcomment
+              this.dataForm.qmcsoure = data.page[0].qmcsoure
+              this.dataForm.qmcomment = data.page[0].qmcomment
+              this.dataForm.id = data.page[0].id
             }
           })
          // }
@@ -82,14 +86,15 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/suggest/${!this.dataForm.id ? 'save' : 'update'}`),
+              url: this.$http.adornUrl(`/generator/score/updateScore`),
               method: 'post',
               data: this.$http.adornData({
-                'id': this.dataForm.id || undefined,
-                'time': this.dataForm.time,
-                'createuser': this.dataForm.createuser,
-                'foruser': this.dataForm.foruser,
-                'content': this.dataForm.content
+                'qzscoure': this.dataForm.qzscoure,
+                'qzcomment': this.dataForm.qzcomment,
+                'qmcsoure': this.dataForm.qmcsoure,
+                'qmcomment': this.dataForm.qmcomment,
+                'userid': this.dataForm.userid,
+                'id': this.dataForm.id
               })
             }).then(({data}) => {
               if (data && data.code === 0) {
