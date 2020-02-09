@@ -100,7 +100,7 @@
                 this.dataForm.endtime = data.task.endtime
   
                 if (data.task.getuser !== '') {
-                  var s = JSON.stringify(data.task.getuser.split(','))
+                  var s = data.task.getuser.split(',')
                   for (var i = 0; i < s.length; i++) {
                     this.dataForm.getuser.push(parseInt(s[i]))
                   }
