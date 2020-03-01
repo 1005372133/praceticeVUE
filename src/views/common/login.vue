@@ -3,10 +3,10 @@
     <div class="site-content__wrapper">
       <div class="site-content">
         <div class="brand-info">
-          <h2 class="brand-info__text">实训管理系统</h2>       
+          <h2 class="brand-info__text"></h2>       
         </div>
         <div class="login-main">
-          <h3 class="login-title">登录账号</h3>
+          <h3 class="login-title">实训管理系统</h3>
           <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" status-icon>
             <el-form-item prop="userName">
               <el-input v-model="dataForm.userName" placeholder="帐号"></el-input>
