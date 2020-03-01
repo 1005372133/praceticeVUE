@@ -6,7 +6,7 @@
           <h2 class="brand-info__text">实训管理系统</h2>       
         </div>
         <div class="login-main">
-          <h3 class="login-title">管理员登录</h3>
+          <h3 class="login-title">登录账号</h3>
           <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" status-icon>
             <el-form-item prop="userName">
               <el-input v-model="dataForm.userName" placeholder="帐号"></el-input>
@@ -132,14 +132,13 @@
     }
     .site-content {
       min-height: 100%;
-      padding: 30px 500px 30px 30px;
     }
     .brand-info {
       margin: 220px 100px 0 90px;
       color: #fff;
     }
     .brand-info__text {
-      margin:  0 0 22px 0;
+      margin:  0 auto;
       font-size: 48px;
       font-weight: 400;
       text-transform : uppercase;
@@ -151,10 +150,10 @@
       opacity: .6;
     }
     .login-main {
-      position: absolute;
+      margin: 0 auto;
       top: 0;
       right: 0;
-      padding: 150px 60px 180px;
+      padding: 30px 60px 60px;
       width: 470px;
       min-height: 100%;
       background-color: #fff;
