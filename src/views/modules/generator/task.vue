@@ -72,7 +72,7 @@
         prop="getuser"
         header-align="center"
         align="center"
-        label="实习学生">
+        label="实训学生">
       </el-table-column>
       <el-table-column
         prop="flag"

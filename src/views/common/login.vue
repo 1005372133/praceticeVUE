@@ -3,7 +3,7 @@
     <div class="site-content__wrapper">
       <div class="site-content">
         <div class="brand-info">
-          <h2 class="brand-info__text">实习管理系统</h2>       
+          <h2 class="brand-info__text">实训管理系统</h2>       
         </div>
         <div class="login-main">
           <h3 class="login-title">管理员登录</h3>

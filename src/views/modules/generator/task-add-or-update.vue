@@ -4,8 +4,8 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="实习名称" prop="name">
-      <el-input v-model="dataForm.name" placeholder="实习名称"></el-input>
+    <el-form-item label="实训名称" prop="name">
+      <el-input v-model="dataForm.name" placeholder="实训名称"></el-input>
     </el-form-item>
     <el-form-item label="开始时间" prop="begintime">
        <el-date-picker v-model="dataForm.begintime" type="date" placeholder="开始时间"  format="yyyy-MM-dd"></el-date-picker>
@@ -14,9 +14,9 @@
        <el-date-picker v-model="dataForm.endtime" type="date" placeholder="结束时间"  format="yyyy-MM-dd"></el-date-picker>
     </el-form-item>
     <el-form-item label="内容" prop="contest">
-        <el-input v-model="dataForm.contest" placeholder="实习名称"></el-input>
+        <el-input v-model="dataForm.contest" placeholder="实训名称"></el-input>
     </el-form-item>
-    <el-form-item label="实习学生" prop="getuser">
+    <el-form-item label="实训学生" prop="getuser">
       <el-checkbox-group v-model="dataForm.getuser">
           <el-checkbox v-for="stu in AllStu" :key="stu.userId" :label="stu.userId">{{ stu.username }}</el-checkbox>
       </el-checkbox-group>
